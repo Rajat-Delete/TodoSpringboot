@@ -1,11 +1,12 @@
 package com.example.TodoAppSpring;
 
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,15 +24,19 @@ public class TodoController {
 
 
     @GetMapping("/todos")
-    public List<Todo> getTodos(){
-        return todos;
+    public ResponseEntity<List<Todo>> getTodos(){
+        return ResponseEntity.status(HttpStatus.OK).body(todos);
     }
 
 
     @PostMapping("/todos")
-    public Todo createTodo(@RequestBody Todo todo){
+
+    public ResponseEntity<Todo> createTodo(@RequestBody Todo todo){
+        /*
+        We can either use this annotation to set the response code @ResponseStatus(HttpStatus.CREATED) or use ResponseEntity class
+         */
         todos.add(todo);
-        return todo;
+        return ResponseEntity.status(HttpStatus.CREATED).body(todo);
     }
 
 }
