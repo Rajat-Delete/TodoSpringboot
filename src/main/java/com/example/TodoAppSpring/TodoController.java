@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/todos")
@@ -47,6 +49,27 @@ public class TodoController {
             }
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/{todoId}")
+    public ResponseEntity<Object> deleteTodoById(@PathVariable(value = "todoId") Long todoId){
+        for(int i = 0;i<todos.size();i++){
+            if(todos.get(i).getId() == todoId){
+                todos.remove(i);
+                return ResponseEntity.ok().build();
+            }
+        }
+        Map<String,String> map = new HashMap<>();
+        map.put("ErrorMessage", "The todoId was not found!!");
+        //return ResponseEntity.notFound().build();
+        return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
+    }
+
+    @PatchMapping("/{todoId}")
+    public ResponseEntity<Todo> updateTodoById(@PathVariable(value = "todoId") Long todoId){
+        //logic to update the todoid
+        //Implementation pending
+        return ResponseEntity.ok().build();
     }
 
 }
